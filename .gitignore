@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.monitor_cache/
+# 鍵は GitHub Secrets / 環境変数で渡す。ファイルでは絶対にコミットしない
+secrets/
+*service_account*.json
+.env

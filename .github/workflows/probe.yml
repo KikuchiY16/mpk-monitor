@@ -1,0 +1,48 @@
+# 接続確認: GitHub Actions のランナーから Yahoo / Netkeiba / YouTube に繋がるかを見る。
+# 最初に1回、手動で実行する(Actions → probe → Run workflow)。
+name: probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      nk_race_id:
+        description: "Netkeiba race_id(12桁、空欄で既定値)"
+        required: false
+        default: ""
+      horse_id:
+        description: "Netkeiba horse_id(空欄で既定値)"
+        required: false
+        default: ""
+      youtube_video_id:
+        description: "YouTube動画ID(配信中のもの、空欄で既定値)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Tokyo
+      MONITOR_WORK_DIR: .monitor_cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: probe
+        env:
+          NK_RACE_ID: ${{ inputs.nk_race_id }}
+          HORSE_ID: ${{ inputs.horse_id }}
+          VIDEO_ID: ${{ inputs.youtube_video_id }}
+        run: |
+          args=()
+          if [ -n "$NK_RACE_ID" ]; then
+            args+=("$NK_RACE_ID" "${HORSE_ID:-2023105825}" "${VIDEO_ID:-gFRtAAmiFbE}")
+          fi
+          python -m monitor.probe "${args[@]}"

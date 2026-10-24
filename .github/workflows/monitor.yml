@@ -1,0 +1,75 @@
+# 開催日の監視。GitHub のランナーは1ジョブ6時間までなので、1日を2ジョブに分ける。
+#   午前ジョブ: 09:00 JST 起動 → 14:30 まで
+#   午後ジョブ: 12:50 JST 起動 → 14:30 から最終レースまで(cron の遅れに備えて早めに起動して待つ)
+# 開催日でなければ数十秒で終了する。cron は UTC 指定。
+name: monitor
+
+on:
+  schedule:
+    - cron: "0 0 * * *"    # 09:00 JST 午前ジョブ
+    - cron: "50 3 * * *"   # 12:50 JST 午後ジョブ
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "YYYY-MM-DD(空欄で今日)"
+        required: false
+        default: ""
+      part:
+        description: "am=〜14:30 / pm=14:30〜 / all=今から最終レースまで(6時間を超える場合は途中で打ち切り)"
+        required: false
+        default: "all"
+        type: choice
+        options: [all, am, pm]
+      dry_run:
+        description: "シートに書かない"
+        required: false
+        default: true
+        type: boolean
+      youtube_video_id:
+        description: "YouTube動画ID(空欄なら Variables の YOUTUBE_VIDEO_ID)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+# 同じ時間帯のジョブが重複して走らないようにする
+concurrency:
+  group: monitor-${{ github.event.schedule || inputs.part }}
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      TZ: Asia/Tokyo
+      MONITOR_WORK_DIR: .monitor_cache
+      SPLIT_AT: "14:30"
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      SHEET_ID: ${{ secrets.SHEET_ID }}
+      YOUTUBE_VIDEO_ID: ${{ inputs.youtube_video_id || vars.YOUTUBE_VIDEO_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: run_day
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          PART: ${{ inputs.part }}
+          DATE: ${{ inputs.date }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          args=()
+          if [ "$SCHEDULE" = "0 0 * * *" ] || [ "$PART" = "am" ]; then
+            args+=(--until "$SPLIT_AT")
+          elif [ "$SCHEDULE" = "50 3 * * *" ] || [ "$PART" = "pm" ]; then
+            args+=(--since "$SPLIT_AT")
+          fi
+          [ -n "$DATE" ] && args+=(--date "$DATE")
+          [ "$DRY_RUN" = "true" ] && args+=(--dry_run)
+          echo "args: ${args[*]}"
+          python -u -m monitor.run_day "${args[@]}"

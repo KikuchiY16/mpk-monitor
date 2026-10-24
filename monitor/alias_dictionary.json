@@ -1,0 +1,131 @@
+{
+  "_readme": [
+    "ライブチャットに出てくる愛称・略称・誤字表記を正式名称に変換するための辞書。",
+    "category: 'jockey' | 'horse' | 'trainer' | 'other'",
+    "canonical: 正式名称（馬名・騎手名などの表記ゆれの基準形）",
+    "aliases: チャットで実際に見かけた表記のリスト（誤字・愛称・苗字のみ等）",
+    "confidence: 'confirmed'（本人確認・複数文脈で裏取り済み） | 'guess'（文脈から推定、未確認）",
+    "notes: 由来や注意点（同姓で複数人いる、など）",
+    "",
+    "運用: 新しいチャットログを読む際、辞書にない未知の呼称が出てきたら、",
+    "文脈・検索で正式名称を特定し、このファイルにエントリを追加していく。"
+  ],
+  "jockeys": [
+    {
+      "canonical": "古川吉洋",
+      "category": "jockey",
+      "aliases": ["フルキチ", "古川", "ふるきち"],
+      "confidence": "confirmed",
+      "notes": "苗字『古川』読み(フル)＋名『吉洋』の吉の音読み(キチ)から。同姓の古川奈穂と『古川』だけでは区別不可、文脈判定が必要。"
+    },
+    {
+      "canonical": "古川奈穂",
+      "category": "jockey",
+      "aliases": ["なほちゃん", "奈穂", "古川菜穂", "古川"],
+      "confidence": "confirmed",
+      "notes": "『古川菜穂』は誤字表記。同姓の古川吉洋と『古川』だけでは区別不可、文脈判定が必要。"
+    },
+    {
+      "canonical": "Zac Lloyd（Z.ロイド）",
+      "category": "jockey",
+      "aliases": ["ロイド", "ロイドさん", "ザックロイド", "ミセスロイド", "ロイドデース"],
+      "confidence": "confirmed",
+      "notes": "豪州出身・短期免許で騎乗する外国人騎手。2026-08-22 札幌2R の文脈でWeb検索により確認。"
+    },
+    {
+      "canonical": "松山弘平",
+      "category": "jockey",
+      "aliases": ["松山", "松山さん", "松山君", "松山くん"],
+      "confidence": "guess",
+      "notes": "『松山』の1語だけでは他の同姓騎手と理論上区別不可だが、現行JRAで最有力候補。"
+    },
+    {
+      "canonical": "浜中俊",
+      "category": "jockey",
+      "aliases": ["浜中"],
+      "confidence": "guess",
+      "notes": "同上、苗字のみの表記。"
+    },
+    {
+      "canonical": "丹内祐次",
+      "category": "jockey",
+      "aliases": ["丹内", "丹内たん"],
+      "confidence": "guess",
+      "notes": "同上、苗字のみの表記。"
+    },
+    {
+      "canonical": "田辺裕信",
+      "category": "jockey",
+      "aliases": ["田辺"],
+      "confidence": "guess",
+      "notes": "同上、苗字のみの表記。"
+    },
+    {
+      "canonical": "石川裕紀人",
+      "category": "jockey",
+      "aliases": ["石川"],
+      "confidence": "confirmed",
+      "notes": "JRA公式の騎手名簿(agent_miho.pdf)で実在確認。苗字のみの表記なので同姓との区別は文脈判定が必要。"
+    },
+    {
+      "canonical": "大野拓弥",
+      "category": "jockey",
+      "aliases": ["大野"],
+      "confidence": "guess",
+      "notes": "苗字のみの表記。2026-08-22 新潟10R の文脈でゴールドシーン号との紐付けを確認。"
+    },
+    {
+      "canonical": "舟山一輝",
+      "category": "jockey",
+      "aliases": ["舟山"],
+      "confidence": "guess",
+      "notes": "苗字のみの表記。"
+    },
+    {
+      "canonical": "永島まなみ",
+      "category": "jockey",
+      "aliases": ["まなみ", "まなみちゃん", "まなみーん"],
+      "confidence": "guess",
+      "notes": "下の名前(まなみ)だけの愛称呼び。女性騎手。"
+    }
+  ],
+  "horses": [
+    {
+      "canonical": "ガミーヌ",
+      "category": "horse",
+      "aliases": ["ガミーヌ", "ガミ"],
+      "confidence": "guess",
+      "notes": "2026-08-22 新潟10R(推定)。パドックで一番人気視されていたが本線では不発だった模様（『ガミーヌだめかも』『ガミーヌからのハズレ』等の反応あり）。"
+    },
+    {
+      "canonical": "ポペット",
+      "category": "horse",
+      "aliases": ["ポペット", "ポペ"],
+      "confidence": "guess",
+      "notes": "2026-08-22 新潟10R(推定)、馬番9の可能性が高い。単勝10万円の大口投稿あり。同日レース後のチャットで『新潟は9が1着』の言及と符合。"
+    },
+    {
+      "canonical": "ゴールドシーン",
+      "category": "horse",
+      "aliases": ["ゴールドシーン"],
+      "confidence": "guess",
+      "notes": "騎手は大野拓弥（『ゴールドシーン大野頼む』で紐付け確認）。"
+    },
+    {
+      "canonical": "ダイヤテソーロ",
+      "category": "horse",
+      "aliases": ["ダイヤテソーロ"],
+      "confidence": "guess",
+      "notes": "2026-08-22 新潟10R(推定)。"
+    },
+    {
+      "canonical": "スマイルカーブ",
+      "category": "horse",
+      "aliases": ["スマイルカーブ"],
+      "confidence": "guess",
+      "notes": "2026-08-22 新潟10R(推定)。パドックで軸候補として名前が挙がっていた。"
+    }
+  ],
+  "trainers": [],
+  "other": []
+}
